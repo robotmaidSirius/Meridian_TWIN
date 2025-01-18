@@ -1,0 +1,63 @@
+{
+	"folders": [
+		{
+			"name": "Meridian_TWIN_Tsy40",
+			"path": "./Meridian_TWIN_Tsy40"
+		}
+	],
+	"settings": {
+		"files.encoding": "utf8",
+		"files.eol": "\n",
+		"doxdocgen.file.versionTag": "@version 1.2.0",
+		"doxdocgen.generic.useGitUserName": true,
+		"doxdocgen.generic.useGitUserEmail": true,
+		"doxdocgen.file.copyrightTag": [
+			"@copyright Copyright (c) {year}-."
+		],
+		"editor.formatOnSave": true,
+		"markdown-preview-enhanced.scrollSync": true,
+		"search.exclude": {
+			"__*": true,
+			".pio/*": true,
+			"**/build": true
+		},
+		"files.exclude": {
+			"**/.git": true,
+			"**/.svn": true,
+			"**/.hg": true,
+			"**/CVS": true,
+			"**/.DS_Store": true,
+			"**/.*": false,
+			".vscode": false
+		},
+		"editor.fontFamily": "Consolas, 'Courier New', monospace",
+		"cSpell.words": [],
+		"forbeslindesay-taskrunner.source": "PlatformIO",
+		"platformio-ide.disablePIOHomeStartup": false,
+		"workbench.colorCustomizations": {
+			"activityBar.activeBackground": "#1f6fd0",
+			"activityBar.background": "#1f6fd0",
+			"activityBar.foreground": "#e7e7e7",
+			"activityBar.inactiveForeground": "#e7e7e799",
+			"activityBarBadge.background": "#ee90bb",
+			"activityBarBadge.foreground": "#15202b",
+			"commandCenter.border": "#e7e7e799",
+			"sash.hoverBorder": "#1f6fd0",
+			"statusBar.background": "#1857a4",
+			"statusBar.foreground": "#e7e7e7",
+			"statusBarItem.hoverBackground": "#1f6fd0",
+			"statusBarItem.remoteBackground": "#1857a4",
+			"statusBarItem.remoteForeground": "#e7e7e7",
+			"titleBar.activeBackground": "#1857a4",
+			"titleBar.activeForeground": "#e7e7e7",
+			"titleBar.inactiveBackground": "#1857a499",
+			"titleBar.inactiveForeground": "#e7e7e799"
+		},
+		"peacock.color": "#1857a4",
+	},
+	"extensions": {
+		"recommendations": [
+			"platformio.platformio-ide"
+		]
+	}
+}
