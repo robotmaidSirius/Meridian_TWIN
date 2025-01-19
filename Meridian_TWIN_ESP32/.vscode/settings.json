@@ -1,3 +1,32 @@
 {
-    "files.autoSave": "onFocusChange"
+    "files.autoSave": "onFocusChange",
+    "cSpell.words": [
+        "Ahrs",
+        "bauval",
+        "baval",
+        "BLUERETRO",
+        "DCORE",
+        "DMASPI",
+        "EEPROM",
+        "espressif",
+        "hideakitai",
+        "HIPJOINT",
+        "HSPI",
+        "imuahrs",
+        "JOYPAD",
+        "MERIDIANFLOW",
+        "Meridim",
+        "MERIMOTE",
+        "meriput",
+        "MRDM",
+        "mrdsq",
+        "nunchuk",
+        "sauval",
+        "saval",
+        "SBDBT",
+        "sdcard",
+        "ubval",
+        "usval",
+        "Wiimote"
+    ]
 }
