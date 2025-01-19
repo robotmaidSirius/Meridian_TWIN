@@ -1,0 +1,20 @@
+name: Check pull request
+on:
+  pull_request:
+    branches:
+    - main
+    - develop
+
+jobs:
+  Meridian_TWIN_ESP32:
+    uses: ./.github/workflows/_WORKFLOW_CALL_RunningPlatformIO.yml
+    with:
+      target_dir: Meridian_TWIN_ESP32
+      board_env: esp32dev
+      firmware_name: firmware_esp32dev
+  Meridian_TWIN_Tsy40:
+    uses: ./.github/workflows/_WORKFLOW_CALL_RunningPlatformIO.yml
+    with:
+      target_dir: Meridian_TWIN_Tsy40
+      board_env: teensy40
+      firmware_name: firmware_teensy40
