@@ -24,6 +24,7 @@ jobs:
       board_env: esp32dev
       build_flags: ${{inputs.build_flags}}
       firmware_name: firmware_esp32dev
+      firmware_ext: bin
   Meridian_TWIN_Tsy40:
     if: github.event.inputs.board_env == 'Meridian_TWIN_Tsy40'
     uses: ./.github/workflows/_WORKFLOW_CALL_RunningPlatformIO.yml
@@ -32,3 +33,4 @@ jobs:
       board_env: teensy40
       build_flags: ${{inputs.build_flags}}
       firmware_name: firmware_teensy40
+      firmware_ext: hex

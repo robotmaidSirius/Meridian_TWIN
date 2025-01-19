@@ -18,6 +18,11 @@ on:
         required: false
         type: string
         default: 'firmware'
+      firmware_ext:
+        description: 'Firmware extension'
+        required: false
+        type: string
+        default: 'bin'
 
 jobs:
   build:
@@ -49,15 +54,15 @@ jobs:
       env:
         PLATFORMIO_BUILD_FLAGS: ${{inputs.build_flags}}
 
-    - name: Rename firmware.bin
+    - name: Rename firmware.${{inputs.firmware_ext}}
       if: success() && '${{inputs.firmware_name}}' != 'firmware'
       working-directory: ${{github.workspace}}/${{inputs.target_dir}}/.pio/build/${{inputs.board_env}}
-      run: cp firmware.bin ${{inputs.firmware_name}}.bin
+      run: cp firmware.${{inputs.firmware_ext}} ${{inputs.firmware_name}}.${{inputs.firmware_ext}}
 
     - name: Upload artifacts
       if: success()
       uses: actions/upload-artifact@v4
       with:
         name: ${{inputs.firmware_name}}
-        path: ${{github.workspace}}/${{inputs.target_dir}}/.pio/build/${{inputs.board_env}}/${{inputs.firmware_name}}.bin
+        path: ${{github.workspace}}/${{inputs.target_dir}}/.pio/build/${{inputs.board_env}}/${{inputs.firmware_name}}.${{inputs.firmware_ext}}
         overwrite: true
