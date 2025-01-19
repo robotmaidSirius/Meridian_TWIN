@@ -4,13 +4,14 @@
 // ヘッダファイルの読み込み
 #include "config.h"
 
-#include <Adafruit_BNO055.h>            // 9軸センサBNO055用
+#include <Adafruit_BNO055.h> // 9軸センサBNO055用
+#include <Arduino.h>
 #include <MPU6050_6Axis_MotionApps20.h> // MPU6050用
 #include <Meridian.h>                   // Meridianのライブラリ導入
 #include <SPI.h>                        // SDカードやSPI通信用
 #include <TsyDMASPI.h>                  // SPI通信Master用
-#include <arduino.h>
 #include <cstdint>
+
 MERIDIANFLOW::Meridian mrd; // ライブラリのクラスを mrdという名前でインスタンス化
 
 #include <IcsHardSerialClass.h> // ICSサーボのインスタンス設定
@@ -69,8 +70,8 @@ enum BinHexDec { // 数値表示タイプの列挙型(Bin, Hex, Dec)
 //------------------------------------------------------------------------------------
 
 // システム用の変数
-const int MRDM_BYTE = MRDM_LEN * 2; // Meridim配列のバイト型の長さ
-const int MRD_ERR = MRDM_LEN - 2; // エラーフラグの格納場所（配列の末尾から2つめ）
+const int MRDM_BYTE = MRDM_LEN * 2;    // Meridim配列のバイト型の長さ
+const int MRD_ERR = MRDM_LEN - 2;      // エラーフラグの格納場所（配列の末尾から2つめ）
 const int MRD_ERR_u = MRD_ERR * 2 + 1; // エラーフラグの格納場所（上位8ビット）
 const int MRD_ERR_l = MRD_ERR * 2;     // エラーフラグの格納場所（下位8ビット）
 const int MRD_CKSM = MRDM_LEN - 1;     // チェックサムの格納場所（配列の末尾）
@@ -95,7 +96,7 @@ Meridim90Union s_spi_meridim_dummy; // SPI送信ダミーデータ用配列
 
 // フラグ管理用の構造体
 struct MrdFlags {
-  bool imuahrs_available = true; // メインセンサ値を読み取る間, サブスレッドによる書き込みを待機
+  bool imuahrs_available = true;  // メインセンサ値を読み取る間, サブスレッドによる書き込みを待機
   bool udp_board_passive = false; // UDP通信の周期制御がボード主導(false) か, PC主導(true)か
   bool count_frame_reset = false; // フレーム管理時計をリセットする
   bool stop_board_during = false; // ボードの末端処理をmeridim[MRD_STOP_FRAMES]ms止める
@@ -108,15 +109,15 @@ struct MrdFlags {
   bool sdcard_read_mode = false;        // SDCARDからの読み込みモード
   bool wire0_init = false;              // I2C 0系統の初期化合否
   bool wire1_init = false;              // I2C 1系統の初期化合否
-  bool bt_busy = false;      // Bluetoothの受信中フラグ（UDPコンフリクト回避用）
-  bool spi_trans = true;     // ESP32とのSPI通信の実施
-  bool spi_rcvd = true;      // SPIのデータ受信判定
-  bool udp_rcvd = false;     // UDPのデータ受信判定
-  bool udp_busy = false;     // UDPスレッドでの受信中フラグ（送信抑制）
-  bool meridim_rcvd = false; // Meridimが正しく受信できたか
-  bool servoL_drive = false; // L系統のサーボの送受信
-  bool servoR_drive = false; // R系統のサーボの送受信
-  bool servoC_drive = false; // C系統のサーボの送受信
+  bool bt_busy = false;                 // Bluetoothの受信中フラグ（UDPコンフリクト回避用）
+  bool spi_trans = true;                // ESP32とのSPI通信の実施
+  bool spi_rcvd = true;                 // SPIのデータ受信判定
+  bool udp_rcvd = false;                // UDPのデータ受信判定
+  bool udp_busy = false;                // UDPスレッドでの受信中フラグ（送信抑制）
+  bool meridim_rcvd = false;            // Meridimが正しく受信できたか
+  bool servoL_drive = false;            // L系統のサーボの送受信
+  bool servoR_drive = false;            // R系統のサーボの送受信
+  bool servoC_drive = false;            // C系統のサーボの送受信
 };
 MrdFlags flg;
 
@@ -131,10 +132,10 @@ MrdSq mrdsq;
 struct MrdTimer {
   long frame_ms = FRAME_DURATION; // 1フレームあたりの単位時間(ms)
   int count_loop = 0;             // サイン計算用の循環カウンタ
-  int count_loop_dlt = 2; // サイン計算用の循環カウンタを1フレームにいくつ進めるか
-  int count_loop_max = 359999; // 循環カウンタの最大値
-  int count_pad_interval = 0; // JOYPADのデータを読みに行くためのフレームカウント★
-  unsigned long count_frame = 0; // メインフレームのカウント
+  int count_loop_dlt = 2;         // サイン計算用の循環カウンタを1フレームにいくつ進めるか
+  int count_loop_max = 359999;    // 循環カウンタの最大値
+  int count_pad_interval = 0;     // JOYPADのデータを読みに行くためのフレームカウント★
+  unsigned long count_frame = 0;  // メインフレームのカウント
 };
 MrdTimer tmr;
 
@@ -199,11 +200,11 @@ struct AhrsValue {
   float ave_data[16];                  // 上記の移動平均値を入れる
   float result[16];                    // 加工後の最新のmpuデータ（二次データ）
   float stock_data[IMUAHRS_STOCK][16]; // 上記の移動平均値計算用のデータストック
-  int stock_count = 0; // 上記の移動平均値計算用のデータストックを輪番させる時の変数
-  VectorInt16 aa;   // [x, y, z]            加速度センサの測定値
-  VectorInt16 gyro; // [x, y, z]            角速度センサの測定値
-  VectorInt16 mag;  // [x, y, z]            磁力センサの測定値
-  long temperature; // センサの温度測定値
+  int stock_count = 0;                 // 上記の移動平均値計算用のデータストックを輪番させる時の変数
+  VectorInt16 aa;                      // [x, y, z]            加速度センサの測定値
+  VectorInt16 gyro;                    // [x, y, z]            角速度センサの測定値
+  VectorInt16 mag;                     // [x, y, z]            磁力センサの測定値
+  long temperature;                    // センサの温度測定値
 };
 AhrsValue ahrs;
 
