@@ -119,7 +119,7 @@ public:
   /// @brief 指定されたUARTラインとサーボタイプに基づいてサーボの通信プロトコルを表示する.
   /// @param a_line UART通信ライン（L, R, C）.
   /// @param a_servo_type サーボのタイプを示す整数値.
-  void servo_protcol(UartLine a_line, int a_servo_type) {
+  void servo_protocol(UartLine a_line, int a_servo_type) {
     if (a_servo_type > 0) {
       m_serial.print("Set UART_");
       m_serial.print(mrd_get_line_name(a_line));
@@ -234,7 +234,7 @@ public:
   /// @param a_flg_disp 表示を実施するかどうか.
   void frame_delay(unsigned long a_delay_time, bool a_flg_disp) {
     if (a_flg_disp) {
-      m_serial.print("deley: ");
+      m_serial.print("delay: ");
       m_serial.print(a_delay_time);
       m_serial.println("ms");
     }
